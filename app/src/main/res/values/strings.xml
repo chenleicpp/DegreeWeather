@@ -6,6 +6,9 @@
     <string name="action_location">Location</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
+    <string name="pre_location">Edit Location</string>
+    <string name="pre_location_summary">Select your location to display the weather</string>
+    <string name="pre_about">About</string>
 
     <string-array name="drawer_titles">
         <item>Live</item>

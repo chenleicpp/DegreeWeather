@@ -1,20 +1,17 @@
 package com.sanshisoft.degreeweather.ui.fragment;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.preference.PreferenceFragment;
 
 import com.sanshisoft.degreeweather.R;
 
 /**
- * Created by chenleicpp on 2014/12/2.
+ * Created by chenleicpp on 2014/12/3.
  */
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends PreferenceFragment {
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_settings, container, false);
-        return rootView;
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.settings);
     }
 }

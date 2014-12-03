@@ -1,5 +1,6 @@
 package com.sanshisoft.degreeweather.ui;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,6 @@ import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.adapter.DrawerAdapter;
 import com.sanshisoft.degreeweather.model.Category;
 import com.sanshisoft.degreeweather.ui.fragment.LiveFragment;
-import com.sanshisoft.degreeweather.ui.fragment.SettingsFragment;
 import com.sanshisoft.degreeweather.ui.fragment.TrendsFragment;
 
 import java.util.ArrayList;
@@ -154,7 +154,9 @@ public class MainActivity extends ActionBarActivity {
                 f = new TrendsFragment();
                 break;
             case 3:
-                f = new SettingsFragment();
+                Intent intent = new Intent();
+                intent.setClass(MainActivity.this,SettingsActivity.class);
+                startActivity(intent);
                 break;
         }
         if (f != null){
@@ -163,8 +165,10 @@ public class MainActivity extends ActionBarActivity {
         }
         mAdapter.setPos(position);
         mDrawerList.setItemChecked(position, true);
-        mDrawerLayout.closeDrawer(mDrawerList);
-        setTitle(mDrawerTitles[position - 1]);
+        if (position != 3) {
+            mDrawerLayout.closeDrawer(mDrawerList);
+            setTitle(mDrawerTitles[position - 1]);
+        }
     }
 
     @Override
