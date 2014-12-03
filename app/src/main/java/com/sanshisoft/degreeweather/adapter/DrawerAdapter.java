@@ -54,7 +54,7 @@ public class DrawerAdapter extends BaseAdapter{
         }
         TextView textView = (TextView) convertView.findViewById(R.id.item_text);
         textView.setText(((Category) getItem(position)).getName());
-        if (position == curPos){
+        if (position + 1 == curPos){
             textView.setTextColor(App.getContext().getResources().getColorStateList(R.color.primary_color));
         }else{
             textView.setTextColor(Color.BLACK);

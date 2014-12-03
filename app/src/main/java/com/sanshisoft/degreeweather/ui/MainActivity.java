@@ -36,6 +36,8 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private List<Category> mCategoriesList;
     private DrawerAdapter mAdapter;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,8 @@ public class MainActivity extends ActionBarActivity {
 
         mDrawerTitles = getResources().getStringArray(R.array.drawer_titles);
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
+
+        mTitle = mDrawerTitle = getTitle();
 
         mCategoriesList = new ArrayList<Category>();
         for (int i = 0;i<mDrawerTitles.length;i++){
@@ -60,12 +64,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
+                getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(mDrawerTitle);
                 invalidateOptionsMenu();
             }
         };
@@ -77,6 +83,8 @@ public class MainActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        if (savedInstanceState == null) selectItem(1);
     }
 
 
@@ -130,7 +138,6 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView parent, View view, int position, long id) {
             selectItem(position);
-            mAdapter.setPos(position + 1);
         }
     }
 
@@ -154,7 +161,15 @@ public class MainActivity extends ActionBarActivity {
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.main_content,f).commit();
         }
+        mAdapter.setPos(position);
         mDrawerList.setItemChecked(position, true);
         mDrawerLayout.closeDrawer(mDrawerList);
+        setTitle(mDrawerTitles[position - 1]);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
     }
 }

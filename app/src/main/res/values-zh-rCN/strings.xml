@@ -2,6 +2,15 @@
 <resources>
 
     <string name="app_name">几度天气</string>
-    <string name="action_settings">设置</string>
+    <string name="action_refresh">刷新</string>
+    <string name="action_location">定位</string>
+    <string name="drawer_open">打开</string>
+    <string name="drawer_close">关闭</string>
+
+    <string-array name="drawer_titles">
+        <item>当前</item>
+        <item>趋势</item>
+        <item>设置</item>
+    </string-array>
 
 </resources>
