@@ -6,6 +6,9 @@
     <string name="action_location">定位</string>
     <string name="drawer_open">打开</string>
     <string name="drawer_close">关闭</string>
+    <string name="pre_location">地理位置</string>
+    <string name="pre_location_summary">选择要显示的地理位置</string>
+    <string name="pre_about">关于</string>
 
     <string-array name="drawer_titles">
         <item>当前</item>

@@ -5,10 +5,15 @@
         android:key="edit_location"
         android:title="@string/pre_location"
         android:summary="@string/pre_location_summary">
+
     </PreferenceScreen>
 
-    <Preference
+    <PreferenceScreen
         android:key="about"
-        android:title="@string/pre_about" />
+        android:title="@string/pre_about">
+        <intent
+            android:targetPackage="com.sanshisoft.degreeweather"
+            android:targetClass="com.sanshisoft.degreeweather.ui.AboutActivity" />
+    </PreferenceScreen>
 
 </PreferenceScreen>
