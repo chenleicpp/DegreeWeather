@@ -1,15 +1,27 @@
 package com.sanshisoft.degreeweather.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.ComponentName;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.util.LogUtil;
+import com.sanshisoft.degreeweather.util.Utils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -19,9 +31,11 @@ import java.io.InputStream;
 /**
  * Created by chenleicpp on 2014/12/8.
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends Activity implements AMapLocationListener {
 
     public static final String CITY_DB_NAME = "city.db";
+
+    private LocationManagerProxy mLocationManagerProxy;
 
     private static final int DB_COPY_SUCCESS = 1;
     private static final int DB_COPY_FAILED = 2;
@@ -33,6 +47,8 @@ public class WelcomeActivity extends Activity {
             switch (msg.what){
                 case DB_COPY_SUCCESS:
                     LogUtil.d("copy db file succeed!!!");
+                    //3.高德地图定位
+                    initLocation();
                     break;
                 case DB_COPY_FAILED:
                     Toast.makeText(WelcomeActivity.this,"copy db file failed!",Toast.LENGTH_LONG).show();
@@ -47,12 +63,23 @@ public class WelcomeActivity extends Activity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                copyDbData();
-            }
-        }).start();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        //1.判断网络
+        if (Utils.isNetVisible(this)){
+            //2.复制db文件
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    copyDbData();
+                }
+            }).start();
+        }else {
+            openNoNetDialog();
+        }
     }
 
     private void copyDbData(){
@@ -83,6 +110,85 @@ public class WelcomeActivity extends Activity {
                 msg.obj = e;
                 mHandler.sendMessage(msg);
             }
+        }else {
+            initLocation();
         }
+    }
+
+    private void openNoNetDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.net_dialog_title).setMessage(R.string.net_dialog_message);
+        builder.setPositiveButton(R.string.dialog_ok,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = null;
+                try{
+                    String sdkVersion = android.os.Build.VERSION.SDK;
+                    if (Integer.valueOf(sdkVersion) > 10 ){
+                        intent = new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS);
+                    }else {
+                        intent = new Intent();
+                        ComponentName comp = new ComponentName("com.android.settings", "com.android.settings.WirelessSettings");
+                        intent.setComponent(comp);
+                        intent.setAction("android.intent.action.VIEW");
+                    }
+                    startActivity(intent);
+                }catch (Exception e){
+                    LogUtil.d("open network settings failed");
+                    e.printStackTrace();
+                }
+            }
+        }).setNegativeButton(R.string.dialog_cancel,new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+                finish();
+            }
+        }).show();
+    }
+
+    private void initLocation(){
+        mLocationManagerProxy = LocationManagerProxy.getInstance(this);
+        mLocationManagerProxy.requestLocationData(LocationProviderProxy.AMapNetwork,60*1000,15,this);
+    }
+
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        if (aMapLocation != null && aMapLocation.getAMapException().getErrorCode() == 0) {
+            LogUtil.d("city:"+aMapLocation.getCity());
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mLocationManagerProxy.removeUpdates(this);
+        mLocationManagerProxy.destroy();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
