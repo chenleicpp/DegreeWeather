@@ -172,7 +172,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                 }
             }
             Intent intent = new Intent();
-            intent.setClass(WelcomeActivity.this,MainActivity.class);
+            intent.setClass(WelcomeActivity.this,SelectActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString(LOCATION_CITY,aMapLocation.getCity());
             intent.putExtras(bundle);

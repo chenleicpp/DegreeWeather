@@ -5,6 +5,24 @@
 
     <include layout="@layout/toolbar" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.sanshisoft.degreeweather.view.PinnedHeaderListView
+            android:id="@+id/cities_display"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:cacheColorHint="#00000000"
+            android:divider="@null"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false" />
 
+        <com.sanshisoft.degreeweather.view.BladeView
+            android:id="@+id/cities_myletterlistview"
+            android:layout_width="30dip"
+            android:layout_height="fill_parent"
+            android:layout_alignParentRight="true"
+            android:background="#00000000" />
+    </RelativeLayout>
 
 </LinearLayout>

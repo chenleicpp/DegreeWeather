@@ -2,4 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="blade_view_text_size">15dip</dimen>
+    <dimen name="biz_plugin_weather_selectcity_group_item_padding">14dip</dimen>
+    <dimen name="biz_plugin_weather_selectcity_item_textsize">13sp</dimen>
 </resources>
