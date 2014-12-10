@@ -20,6 +20,7 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.sanshisoft.degreeweather.R;
+import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.util.LogUtil;
 import com.sanshisoft.degreeweather.util.Utils;
 
@@ -33,12 +34,14 @@ import java.io.InputStream;
  */
 public class WelcomeActivity extends Activity implements AMapLocationListener {
 
-    public static final String CITY_DB_NAME = "city.db";
-
     private LocationManagerProxy mLocationManagerProxy;
 
     private static final int DB_COPY_SUCCESS = 1;
     private static final int DB_COPY_FAILED = 2;
+
+    public static final String LOCATION_CITY = "location_city";
+
+    private long beginTime;
 
     private Handler mHandler = new Handler(){
         @Override
@@ -48,7 +51,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                 case DB_COPY_SUCCESS:
                     LogUtil.d("copy db file succeed!!!");
                     //3.高德地图定位
-                    initLocation();
+                    requestLocation();
                     break;
                 case DB_COPY_FAILED:
                     Toast.makeText(WelcomeActivity.this,"copy db file failed!",Toast.LENGTH_LONG).show();
@@ -63,6 +66,8 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_welcome);
+        mLocationManagerProxy = LocationManagerProxy.getInstance(this);
+        beginTime = System.currentTimeMillis();
     }
 
     @Override
@@ -87,12 +92,12 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
         String path = "/data"
                 + Environment.getDataDirectory().getAbsolutePath()
                 + File.separator + "com.sanshisoft.degreeweather" + File.separator
-                + CITY_DB_NAME;
+                + CityDB.CITY_DB_NAME;
         File file = new File(path);
         if (!file.exists()){
             LogUtil.d("db file not found!");
             try {
-                InputStream is = getAssets().open(CITY_DB_NAME);
+                InputStream is = getAssets().open(CityDB.CITY_DB_NAME);
                 FileOutputStream fos = new FileOutputStream(file);
                 int len = -1;
                 byte[] buffer = new byte[1024];
@@ -111,7 +116,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                 mHandler.sendMessage(msg);
             }
         }else {
-            initLocation();
+            requestLocation();
         }
     }
 
@@ -147,16 +152,35 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
         }).show();
     }
 
-    private void initLocation(){
-        mLocationManagerProxy = LocationManagerProxy.getInstance(this);
+    private void requestLocation(){
         mLocationManagerProxy.requestLocationData(LocationProviderProxy.AMapNetwork,60*1000,15,this);
     }
 
 
     @Override
     public void onLocationChanged(AMapLocation aMapLocation) {
+        LogUtil.d("error:"+aMapLocation.getAMapException().getErrorMessage());
         if (aMapLocation != null && aMapLocation.getAMapException().getErrorCode() == 0) {
-            LogUtil.d("city:"+aMapLocation.getCity());
+            //4.请求天气
+            long intervalTime = System.currentTimeMillis() - beginTime;
+            if (intervalTime < 2 * 1000) {
+                try {
+                    Thread.sleep(2000 - intervalTime);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            Intent intent = new Intent();
+            intent.setClass(WelcomeActivity.this,MainActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString(LOCATION_CITY,aMapLocation.getCity());
+            intent.putExtras(bundle);
+            startActivity(intent);
+            finish();
+        }else {
+            //
+            Toast.makeText(WelcomeActivity.this,R.string.gps_error,Toast.LENGTH_SHORT).show();
         }
     }
 

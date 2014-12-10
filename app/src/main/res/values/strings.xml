@@ -13,6 +13,8 @@
     <string name="net_dialog_message">Set the network settings?</string>
     <string name="dialog_ok">Ok</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="gps_error">gps location failed,press back to exit!</string>
+    <string name="activity_select">select location</string>
 
     <string-array name="drawer_titles">
         <item>Live</item>

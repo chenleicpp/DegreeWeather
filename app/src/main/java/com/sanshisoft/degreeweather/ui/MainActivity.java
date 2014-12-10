@@ -3,6 +3,7 @@ package com.sanshisoft.degreeweather.ui;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -19,10 +20,14 @@ import android.widget.ListView;
 
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.adapter.DrawerAdapter;
+import com.sanshisoft.degreeweather.bean.City;
+import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.model.Category;
 import com.sanshisoft.degreeweather.ui.fragment.LiveFragment;
 import com.sanshisoft.degreeweather.ui.fragment.TrendsFragment;
+import com.sanshisoft.degreeweather.util.LogUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +43,8 @@ public class MainActivity extends ActionBarActivity {
     private DrawerAdapter mAdapter;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+
+    private String mCityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +92,10 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         if (savedInstanceState == null) selectItem(1);
+
+        Bundle b = getIntent().getExtras();
+        mCityName = b.getString(WelcomeActivity.LOCATION_CITY);
+        LogUtil.d(mCityName);
     }
 
 

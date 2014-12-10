@@ -5,6 +5,9 @@
         android:key="edit_location"
         android:title="@string/pre_location"
         android:summary="@string/pre_location_summary">
+        <intent
+            android:targetPackage="com.sanshisoft.degreeweather"
+            android:targetClass="com.sanshisoft.degreeweather.ui.SelectActivity" />
 
     </PreferenceScreen>
 

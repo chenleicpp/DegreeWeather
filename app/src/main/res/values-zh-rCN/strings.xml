@@ -13,6 +13,8 @@
     <string name="net_dialog_message">是否对网络进行设置</string>
     <string name="dialog_ok">确定</string>
     <string name="dialog_cancel">取消</string>
+    <string name="gps_error">定位失败，请按返回键退出！</string>
+    <string name="activity_select">选择位置</string>
 
     <string-array name="drawer_titles">
         <item>当前</item>
