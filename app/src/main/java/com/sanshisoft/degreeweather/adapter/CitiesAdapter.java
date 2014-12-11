@@ -6,7 +6,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -66,7 +65,7 @@ public class CitiesAdapter extends BaseAdapter implements SectionIndexer,
         // TODO Auto-generated method stub
         int section = getSectionForPosition(position);
         if (convertView == null) {
-            convertView = inflater.inflate(R.layout.select_city_item, null);
+            convertView = inflater.inflate(R.layout.phl_list_city_item, null);
         }
         TextView group = (TextView) convertView.findViewById(R.id.group_title);
         TextView city = (TextView) convertView.findViewById(R.id.column_title);

@@ -55,7 +55,7 @@ public class BladeView extends View {
 		int width = getWidth();
 		int singleHeight = height / b.length;
 		for (int i = 0; i < b.length; i++) {
-			paint.setColor(Color.BLACK);
+			paint.setColor(Color.GRAY);
 			//paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setTextSize(mCharHeight);
 			paint.setFakeBoldText(true);

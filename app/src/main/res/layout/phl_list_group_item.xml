@@ -4,10 +4,10 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_group_item_background_selected"
-    android:gravity="left|center"
+    android:gravity="start|center"
     android:paddingBottom="5dip"
-    android:paddingLeft="@dimen/biz_plugin_weather_selectcity_group_item_padding"
-    android:paddingRight="@dimen/biz_plugin_weather_selectcity_group_item_padding"
+    android:paddingLeft="14dip"
+    android:paddingRight="14dip"
     android:paddingTop="5dip"
     android:textStyle="bold"
-    android:textColor="#ff2f2f2f"/>
+    android:textColor="#ff2f2f2f" />
