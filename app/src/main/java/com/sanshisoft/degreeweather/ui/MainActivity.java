@@ -1,5 +1,6 @@
 package com.sanshisoft.degreeweather.ui;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.internal.view.menu.ActionMenuItem;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -18,6 +20,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.adapter.DrawerAdapter;
 import com.sanshisoft.degreeweather.bean.City;
@@ -34,6 +37,8 @@ import java.util.List;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static final String LOCATION_CITY = "location_city";
+
     private String[] mDrawerTitles;
 
     private ListView mDrawerList;
@@ -45,6 +50,15 @@ public class MainActivity extends ActionBarActivity {
     private CharSequence mTitle;
 
     private String mCityName;
+
+    public static void launch(Activity activity,String city){
+        Intent intent = new Intent(activity,MainActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(LOCATION_CITY,city);
+        intent.putExtras(bundle);
+        activity.startActivity(intent);
+        activity.finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,9 +107,15 @@ public class MainActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) selectItem(1);
 
+        initDB();
+
         Bundle b = getIntent().getExtras();
-        mCityName = b.getString(WelcomeActivity.LOCATION_CITY);
-        LogUtil.d(mCityName);
+        mCityName = b.getString(LOCATION_CITY);
+        CityDB db = App.getInstance().getCityDB();
+            if (db != null){
+            City city = db.getCity(mCityName);
+            LogUtil.d(city.getNumber());
+        }
     }
 
 
@@ -187,4 +207,14 @@ public class MainActivity extends ActionBarActivity {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
     }
+
+    private void initDB(){
+        String path = "/data"
+                + Environment.getDataDirectory().getAbsolutePath()
+                + File.separator + "com.sanshisoft.degreeweather" + File.separator
+                + CityDB.CITY_DB_NAME;
+        CityDB db = new CityDB(getApplicationContext(),path);
+        App.getInstance().setCityDB(db);
+    }
+
 }

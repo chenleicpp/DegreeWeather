@@ -19,6 +19,7 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
+import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.util.LogUtil;
@@ -39,7 +40,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
     private static final int DB_COPY_SUCCESS = 1;
     private static final int DB_COPY_FAILED = 2;
 
-    public static final String LOCATION_CITY = "location_city";
+    private String mDbPath;
 
     private long beginTime;
 
@@ -89,11 +90,11 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
 
     private void copyDbData(){
         Message msg = mHandler.obtainMessage();
-        String path = "/data"
+        mDbPath = "/data"
                 + Environment.getDataDirectory().getAbsolutePath()
                 + File.separator + "com.sanshisoft.degreeweather" + File.separator
                 + CityDB.CITY_DB_NAME;
-        File file = new File(path);
+        File file = new File(mDbPath);
         if (!file.exists()){
             LogUtil.d("db file not found!");
             try {
@@ -171,13 +172,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                     e.printStackTrace();
                 }
             }
-            Intent intent = new Intent();
-            intent.setClass(WelcomeActivity.this,SelectActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString(LOCATION_CITY,aMapLocation.getCity());
-            intent.putExtras(bundle);
-            startActivity(intent);
-            finish();
+            MainActivity.launch(this,aMapLocation.getCity());
         }else {
             //
             Toast.makeText(WelcomeActivity.this,R.string.gps_error,Toast.LENGTH_SHORT).show();

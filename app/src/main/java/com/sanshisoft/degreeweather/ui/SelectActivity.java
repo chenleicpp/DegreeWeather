@@ -4,12 +4,22 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 
+import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.adapter.CitiesAdapter;
+import com.sanshisoft.degreeweather.adapter.SearchCityAdapter;
 import com.sanshisoft.degreeweather.bean.City;
 import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.util.LogUtil;
@@ -26,12 +36,14 @@ import java.util.Map;
 /**
  * Created by chenleicpp on 2014/12/3.
  */
-public class SelectActivity extends ActionBarActivity {
+public class SelectActivity extends ActionBarActivity implements TextWatcher,
+        View.OnClickListener {
 
     private static final String FORMAT = "^[a-z,A-Z].*$";
     private PinnedHeaderListView mListView;
     private BladeView mLetter;
     private CitiesAdapter mAdapter;
+    private SearchCityAdapter mSearchCityAdapter;
     private List<City> datas;
     // 首字母集
     private List<String> mSections;
@@ -43,6 +55,18 @@ public class SelectActivity extends ActionBarActivity {
     private Map<String, Integer> mIndexer;
 
     private CityDB mCityDB;
+
+    private EditText mSearchEditText;
+
+    private ImageButton mClearSearchBtn;
+
+    private View mCityContainer;
+
+    private View mSearchContainer;
+
+    private ListView mSearchListView;
+
+    private InputMethodManager mInputMethodManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +85,15 @@ public class SelectActivity extends ActionBarActivity {
                 finish();
             }
         });
+
+        mInputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
         initData();
         initView();
     }
 
     private void initData(){
-        String path = "/data"
-                + Environment.getDataDirectory().getAbsolutePath()
-                + File.separator + "com.sanshisoft.degreeweather" + File.separator
-                + CityDB.CITY_DB_NAME;
-        mCityDB = new CityDB(this,path);
+        mCityDB = App.getInstance().getCityDB();
         datas = new ArrayList<City>();
         mSections = new ArrayList<String>();
         mMap = new HashMap<String, List<City>>();
@@ -109,6 +132,14 @@ public class SelectActivity extends ActionBarActivity {
     }
 
     private void initView(){
+        mSearchEditText = (EditText) findViewById(R.id.search_edit);
+        mSearchEditText.addTextChangedListener(this);
+        mClearSearchBtn = (ImageButton) findViewById(R.id.ib_clear_text);
+        mClearSearchBtn.setOnClickListener(this);
+
+        mCityContainer = findViewById(R.id.city_content_container);
+        mSearchContainer = findViewById(R.id.search_content_container);
+
         mListView = (PinnedHeaderListView) findViewById(R.id.cities_display);
         mLetter = (BladeView) findViewById(R.id.cities_myletterlistview);
         mLetter.setOnItemClickListener(new BladeView.OnItemClickListener() {
@@ -123,12 +154,35 @@ public class SelectActivity extends ActionBarActivity {
         mAdapter = new CitiesAdapter(this, datas, mMap, mSections, mPositions);
         mListView.setAdapter(mAdapter);
         mListView.setOnScrollListener(mAdapter);
+        mListView.setEmptyView(findViewById(R.id.citys_list_empty));
         mListView.setPinnedHeaderView(LayoutInflater.from(this).inflate(
                 R.layout.phl_list_group_item, mListView, false));
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 LogUtil.d(mAdapter.getItem(i).toString());
+            }
+        });
+
+        mSearchListView = (ListView) findViewById(R.id.search_list);
+        mSearchListView.setEmptyView(findViewById(R.id.search_empty));
+        mSearchContainer.setVisibility(View.GONE);
+        mSearchListView.setOnTouchListener(new View.OnTouchListener() {
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                mInputMethodManager.hideSoftInputFromWindow(
+                        mSearchEditText.getWindowToken(), 0);
+                return false;
+            }
+        });
+
+        mSearchListView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                LogUtil.d(mSearchCityAdapter.getItem(position).toString());
             }
         });
     }
@@ -138,5 +192,48 @@ public class SelectActivity extends ActionBarActivity {
         super.onDestroy();
         if (mCityDB != null && mCityDB.isOpen())
             mCityDB.close();
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.ib_clear_text:
+                if (!TextUtils.isEmpty(mSearchEditText.getText().toString())) {
+                    mSearchEditText.setText("");
+                    mInputMethodManager.hideSoftInputFromWindow(
+                            mSearchEditText.getWindowToken(), 0);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+        mSearchCityAdapter = new SearchCityAdapter(SelectActivity.this,
+                datas);
+        mSearchListView.setAdapter(mSearchCityAdapter);
+        mSearchListView.setTextFilterEnabled(true);
+        if (datas.size() < 1 || TextUtils.isEmpty(s)) {
+            mCityContainer.setVisibility(View.VISIBLE);
+            mSearchContainer.setVisibility(View.INVISIBLE);
+            mClearSearchBtn.setVisibility(View.GONE);
+        } else {
+            mClearSearchBtn.setVisibility(View.VISIBLE);
+            mCityContainer.setVisibility(View.INVISIBLE);
+            mSearchContainer.setVisibility(View.VISIBLE);
+            mSearchCityAdapter.getFilter().filter(s);
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
     }
 }
