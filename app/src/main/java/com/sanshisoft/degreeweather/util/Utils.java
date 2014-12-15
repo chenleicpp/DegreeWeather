@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 
 import com.sanshisoft.degreeweather.App;
+import com.sanshisoft.degreeweather.AppConfig;
 import com.sanshisoft.degreeweather.R;
 
 /**
@@ -37,5 +38,11 @@ public class Utils {
             return cm.getActiveNetworkInfo().isAvailable();
         }
         return false;
+    }
+
+    public static String getWeatherUrl(String cityCode){
+        String url = null;
+        url = AppConfig.WEATHER_ADDRESS + cityCode;
+        return url;
     }
 }

@@ -112,9 +112,9 @@ public class MainActivity extends ActionBarActivity {
         Bundle b = getIntent().getExtras();
         mCityName = b.getString(LOCATION_CITY);
         CityDB db = App.getInstance().getCityDB();
-            if (db != null){
+        if (db != null){
             City city = db.getCity(mCityName);
-            LogUtil.d(city.getNumber());
+            App.getInstance().setCityNumber(city.getNumber());
         }
     }
 

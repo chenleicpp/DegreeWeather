@@ -13,6 +13,8 @@ public class App extends Application {
 
     private CityDB cityDB;
 
+    private String cityNumber;
+
     private static App mApplication;
 
     @Override
@@ -36,6 +38,14 @@ public class App extends Application {
 
     public CityDB getCityDB(){
         return cityDB;
+    }
+
+    public void setCityNumber(String cityNumber){
+        this.cityNumber = cityNumber;
+    }
+
+    public String getCityNumber(){
+        return cityNumber;
     }
 }
 
