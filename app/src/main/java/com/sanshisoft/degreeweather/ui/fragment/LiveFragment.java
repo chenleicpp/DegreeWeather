@@ -1,6 +1,7 @@
 package com.sanshisoft.degreeweather.ui.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -32,6 +33,10 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     TextView mNowTime;
     @InjectView(R.id.now_description)
     TextView mNowDesc;
+    @InjectView(R.id.high_temp)
+    TextView mHighTemp;
+    @InjectView(R.id.low_temp)
+    TextView mLowTemp;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -89,6 +94,33 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 int yestodayMin = Integer.parseInt(weather.getYestoday().getTempMin());
                 LogUtil.d("todayMax:"+todayMax+"   todayMin:"+todayMin);
                 LogUtil.d("yestodayMax:"+yestodayMax+"   yestodayMin:"+yestodayMin);
+                int diff;
+                if (todayMax > yestodayMax){
+                    diff = todayMax - yestodayMax;
+                    mHighTemp.setText(diff+"℃");
+                    drawLeftHigh(mHighTemp);
+                }else if (todayMax == yestodayMax){
+                    diff = todayMax - yestodayMax;
+                    mHighTemp.setText(diff+"℃");
+                    drawLeftSame(mHighTemp);
+                }else if (todayMax < yestodayMax){
+                    diff = Math.abs(todayMax - yestodayMax);
+                    mHighTemp.setText(diff+"℃");
+                    drawLeftLow(mHighTemp);
+                }
+                if (todayMin > yestodayMin){
+                    diff = todayMin - yestodayMin;
+                    mLowTemp.setText(diff+"℃");
+                    drawLeftHigh(mLowTemp);
+                }else if (todayMin == yestodayMin){
+                    diff = todayMin - yestodayMin;
+                    mLowTemp.setText(diff+"℃");
+                    drawLeftSame(mLowTemp);
+                }else if (todayMin < yestodayMin){
+                    diff = Math.abs(todayMin - yestodayMin);
+                    mLowTemp.setText(diff+"℃");
+                    drawLeftLow(mLowTemp);
+                }
                 stopProgress();
             }
         }, errorListener()));
@@ -96,7 +128,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private int getTodayMax(String str){
         String res = null;
-        String temp = str.split("~")[0];
+        String temp = str.split("~")[1];
         res = temp.substring(0,temp.indexOf("℃"));
         if (res != null && !res.isEmpty()){
             return Integer.parseInt(res);
@@ -106,11 +138,29 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private int getTodayMin(String str){
         String res = null;
-        String temp = str.split("~")[1];
+        String temp = str.split("~")[0];
         res = temp.substring(0,temp.indexOf("℃"));
         if (res != null && !res.isEmpty()){
             return Integer.parseInt(res);
         }
         return -256;
+    }
+
+    private void drawLeftHigh(TextView tv){
+        Drawable drawable= getResources().getDrawable(R.drawable.ic_trending_up_white_48dp);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        tv.setCompoundDrawables(drawable,null,null,null);
+    }
+
+    private void drawLeftLow(TextView tv){
+        Drawable drawable= getResources().getDrawable(R.drawable.ic_trending_down_white_48dp);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        tv.setCompoundDrawables(drawable,null,null,null);
+    }
+
+    private void drawLeftSame(TextView tv){
+        Drawable drawable= getResources().getDrawable(R.drawable.ic_trending_neutral_white_48dp);
+        drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+        tv.setCompoundDrawables(drawable,null,null,null);
     }
 }

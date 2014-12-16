@@ -48,14 +48,27 @@
                 android:text="@string/no_results_now" />
 
             <TextView
-                    android:textSize="80.0sp"
-                    android:textColor="#ffffffff"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/high_temp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20.0dip"
-                    android:text="5℃"/>
+                android:textSize="80.0sp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/high_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20.0dip"
+                android:text="5℃"
+                android:drawableLeft="@drawable/ic_trending_down_white_48dp"/>
+
+            <TextView
+                android:textSize="80.0sp"
+                android:textColor="#ffffffff"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/low_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20.0dip"
+                android:text="5℃"
+                android:drawableLeft="@drawable/ic_trending_up_white_48dp"/>
+
         </LinearLayout>
     </ScrollView>
 
