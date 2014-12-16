@@ -15,6 +15,9 @@
     <string name="dialog_cancel">取消</string>
     <string name="gps_error">定位失败，请按返回键退出！</string>
     <string name="activity_select">选择位置</string>
+    <string name="no_results_now">暂无</string>
+    <string name="high_desc">比昨日最高温</string>
+    <string name="low_desc">比昨日最低温</string>
 
     <string-array name="drawer_titles">
         <item>当前</item>

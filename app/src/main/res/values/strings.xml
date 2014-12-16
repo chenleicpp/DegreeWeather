@@ -15,6 +15,7 @@
     <string name="dialog_cancel">Cancel</string>
     <string name="gps_error">gps location failed,press back to exit!</string>
     <string name="activity_select">select location</string>
+    <string name="no_results_now">no result</string>
 
     <string-array name="drawer_titles">
         <item>Live</item>
