@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.sanshisoft.degreeweather.db.CityDB;
+import com.sanshisoft.degreeweather.net.RequestManager;
 
 /**
  * Created by chenleicpp on 2014/12/2.
@@ -22,6 +23,7 @@ public class App extends Application {
         super.onCreate();
         mApplication = this;
         sContext = getApplicationContext();
+        RequestManager.init(this);
     }
 
     public static App getInstance(){

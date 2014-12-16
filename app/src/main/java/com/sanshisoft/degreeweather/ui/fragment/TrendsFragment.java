@@ -11,7 +11,7 @@ import com.sanshisoft.degreeweather.R;
 /**
  * Created by chenleicpp on 2014/12/2.
  */
-public class TrendsFragment extends Fragment {
+public class TrendsFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_trends, container, false);
