@@ -55,8 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20.0dip"
-                android:text="5℃"
-                android:drawableLeft="@drawable/ic_trending_down_white_48dp"/>
+                android:text="@string/no_results_now"/>
 
             <TextView
                 android:textSize="80.0sp"
@@ -66,8 +65,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20.0dip"
-                android:text="5℃"
-                android:drawableLeft="@drawable/ic_trending_up_white_48dp"/>
+                android:text="@string/no_results_now"/>
 
         </LinearLayout>
     </ScrollView>

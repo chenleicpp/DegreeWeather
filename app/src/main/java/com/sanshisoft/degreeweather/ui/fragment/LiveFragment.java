@@ -12,10 +12,14 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
+import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
+import com.sanshisoft.degreeweather.model.TWeather;
 import com.sanshisoft.degreeweather.model.Weather;
 import com.sanshisoft.degreeweather.net.GsonRequest;
 import com.sanshisoft.degreeweather.util.LogUtil;
 import com.sanshisoft.degreeweather.util.Utils;
+
+import java.sql.SQLException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -38,6 +42,8 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @InjectView(R.id.low_temp)
     TextView mLowTemp;
 
+    private TWeatherDao dao;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_live, container, false);
@@ -46,7 +52,8 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-
+        dao = new TWeatherDao(getActivity());
+        loadFromDb();
         loadData(true);
 
         return rootView;
@@ -92,34 +99,13 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 int todayMin = getTodayMin(weather.getForecast().getTemp1());
                 int yestodayMax = Integer.parseInt(weather.getYestoday().getTempMax());
                 int yestodayMin = Integer.parseInt(weather.getYestoday().getTempMin());
-                LogUtil.d("todayMax:"+todayMax+"   todayMin:"+todayMin);
-                LogUtil.d("yestodayMax:"+yestodayMax+"   yestodayMin:"+yestodayMin);
-                int diff;
-                if (todayMax > yestodayMax){
-                    diff = todayMax - yestodayMax;
-                    mHighTemp.setText(diff+"℃");
-                    drawLeftHigh(mHighTemp);
-                }else if (todayMax == yestodayMax){
-                    diff = todayMax - yestodayMax;
-                    mHighTemp.setText(diff+"℃");
-                    drawLeftSame(mHighTemp);
-                }else if (todayMax < yestodayMax){
-                    diff = Math.abs(todayMax - yestodayMax);
-                    mHighTemp.setText(diff+"℃");
-                    drawLeftLow(mHighTemp);
-                }
-                if (todayMin > yestodayMin){
-                    diff = todayMin - yestodayMin;
-                    mLowTemp.setText(diff+"℃");
-                    drawLeftHigh(mLowTemp);
-                }else if (todayMin == yestodayMin){
-                    diff = todayMin - yestodayMin;
-                    mLowTemp.setText(diff+"℃");
-                    drawLeftSame(mLowTemp);
-                }else if (todayMin < yestodayMin){
-                    diff = Math.abs(todayMin - yestodayMin);
-                    mLowTemp.setText(diff+"℃");
-                    drawLeftLow(mLowTemp);
+                LogUtil.d("todayMax:" + todayMax + "   todayMin:" + todayMin);
+                LogUtil.d("yestodayMax:" + yestodayMax + "   yestodayMin:" + yestodayMin);
+                showDiffDegree(todayMax, todayMin, yestodayMax, yestodayMin);
+                try {
+                    dao.insertNew(weather);
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
                 stopProgress();
             }
@@ -128,7 +114,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private int getTodayMax(String str){
         String res = null;
-        String temp = str.split("~")[1];
+        String temp = str.split("~")[0];
         res = temp.substring(0,temp.indexOf("℃"));
         if (res != null && !res.isEmpty()){
             return Integer.parseInt(res);
@@ -138,7 +124,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
 
     private int getTodayMin(String str){
         String res = null;
-        String temp = str.split("~")[0];
+        String temp = str.split("~")[1];
         res = temp.substring(0,temp.indexOf("℃"));
         if (res != null && !res.isEmpty()){
             return Integer.parseInt(res);
@@ -149,7 +135,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     private void drawLeftHigh(TextView tv){
         Drawable drawable= getResources().getDrawable(R.drawable.ic_trending_up_white_48dp);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-        tv.setCompoundDrawables(drawable,null,null,null);
+        tv.setCompoundDrawables(drawable, null, null, null);
     }
 
     private void drawLeftLow(TextView tv){
@@ -162,5 +148,51 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         Drawable drawable= getResources().getDrawable(R.drawable.ic_trending_neutral_white_48dp);
         drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
         tv.setCompoundDrawables(drawable,null,null,null);
+    }
+
+    private void showDiffDegree(int todayMax,int todayMin,int yestodayMax,int yestodayMin){
+        int diff;
+        if (todayMax > yestodayMax) {
+            diff = todayMax - yestodayMax;
+            mHighTemp.setText(diff + "℃");
+            drawLeftHigh(mHighTemp);
+        } else if (todayMax == yestodayMax) {
+            diff = todayMax - yestodayMax;
+            mHighTemp.setText(diff + "℃");
+            drawLeftSame(mHighTemp);
+        } else if (todayMax < yestodayMax) {
+            diff = Math.abs(todayMax - yestodayMax);
+            mHighTemp.setText(diff + "℃");
+            drawLeftLow(mHighTemp);
+        }
+        if (todayMin > yestodayMin) {
+            diff = todayMin - yestodayMin;
+            mLowTemp.setText(diff + "℃");
+            drawLeftHigh(mLowTemp);
+        } else if (todayMin == yestodayMin) {
+            diff = todayMin - yestodayMin;
+            mLowTemp.setText(diff + "℃");
+            drawLeftSame(mLowTemp);
+        } else if (todayMin < yestodayMin) {
+            diff = Math.abs(todayMin - yestodayMin);
+            mLowTemp.setText(diff + "℃");
+            drawLeftLow(mLowTemp);
+        }
+    }
+
+    private void loadFromDb(){
+        if (dao.getRowCount() >= 0){
+            TWeather weather = dao.getTWeather();
+            if (weather != null){
+                mNowCity.setText(weather.getCity());
+                mNowTime.setText(weather.getTime());
+                mNowDesc.setText(weather.getWeather());
+                int yestodayMax = Integer.parseInt(weather.getYtempMax());
+                int yestodayMin = Integer.parseInt(weather.getYtempMin());
+                int todayMax = getTodayMax(weather.getTemp1());
+                int todayMin = getTodayMin(weather.getTemp1());
+                showDiffDegree(todayMax,todayMin,yestodayMax,yestodayMin);
+            }
+        }
     }
 }
