@@ -42,7 +42,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
     @InjectView(R.id.low_temp)
     TextView mLowTemp;
 
-    private TWeatherDao dao;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,7 +52,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mSwipeLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light, android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
-        dao = new TWeatherDao(getActivity());
+
         loadFromDb();
         loadData(true);
 
@@ -64,27 +64,9 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         loadData(false);
     }
 
-    private void startProgress(){
-        mSwipeLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeLayout.setRefreshing(true);
-            }
-        });
-    }
-
-    private void stopProgress(){
-        mSwipeLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeLayout.setRefreshing(false);
-            }
-        });
-    }
-
     private void loadData(boolean auto){
         if (auto){
-            startProgress();
+            startProgress(mSwipeLayout);
         }
         //load
         String url = Utils.getWeatherUrl(App.getInstance().getCityNumber());
@@ -107,29 +89,35 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-                stopProgress();
+                stopProgress(mSwipeLayout);
             }
         }, errorListener()));
     }
 
     private int getTodayMax(String str){
-        String res = null;
-        String temp = str.split("~")[0];
-        res = temp.substring(0,temp.indexOf("℃"));
-        if (res != null && !res.isEmpty()){
-            return Integer.parseInt(res);
+        int res1,res2;
+        String temp1 = str.split("~")[0];
+        String temp2 = str.split("~")[1];
+        res1 = Integer.parseInt(temp1.substring(0,temp1.indexOf("℃")));
+        res2 = Integer.parseInt(temp2.substring(0,temp2.indexOf("℃")));
+        if (res1 < res2){
+            return res2;
+        }else {
+            return res1;
         }
-        return -256;
     }
 
     private int getTodayMin(String str){
-        String res = null;
-        String temp = str.split("~")[1];
-        res = temp.substring(0,temp.indexOf("℃"));
-        if (res != null && !res.isEmpty()){
-            return Integer.parseInt(res);
+        int res1,res2;
+        String temp1 = str.split("~")[0];
+        String temp2 = str.split("~")[1];
+        res1 = Integer.parseInt(temp1.substring(0,temp1.indexOf("℃")));
+        res2 = Integer.parseInt(temp2.substring(0,temp2.indexOf("℃")));
+        if (res1 < res2){
+            return res1;
+        }else {
+            return res2;
         }
-        return -256;
     }
 
     private void drawLeftHigh(TextView tv){

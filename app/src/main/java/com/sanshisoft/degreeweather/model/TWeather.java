@@ -44,6 +44,11 @@ public class TWeather {
     private String time;
     @DatabaseField
     private String weather;
+    //yestoday weather
+    @DatabaseField
+    private String weatherStart;
+    @DatabaseField
+    private String weatherEnd;
 
     public int getId() {
         return id;
@@ -189,6 +194,22 @@ public class TWeather {
         this.weather = weather;
     }
 
+    public String getWeatherStart() {
+        return weatherStart;
+    }
+
+    public void setWeatherStart(String weatherStart) {
+        this.weatherStart = weatherStart;
+    }
+
+    public String getWeatherEnd() {
+        return weatherEnd;
+    }
+
+    public void setWeatherEnd(String weatherEnd) {
+        this.weatherEnd = weatherEnd;
+    }
+
     @Override
     public String toString() {
         return "TWeather{" +
@@ -210,6 +231,8 @@ public class TWeather {
                 ", ytempMin='" + ytempMin + '\'' +
                 ", time='" + time + '\'' +
                 ", weather='" + weather + '\'' +
+                ", weatherStart='" + weatherStart + '\'' +
+                ", weatherEnd='" + weatherEnd + '\'' +
                 '}';
     }
 }

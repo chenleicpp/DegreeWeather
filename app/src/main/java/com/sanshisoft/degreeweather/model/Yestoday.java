@@ -8,16 +8,20 @@ public class Yestoday {
     private String date;
     private String tempMax;
     private String tempMin;
+    private String weatherStart;
+    private String weatherEnd;
 
     public Yestoday() {
         super();
     }
 
-    public Yestoday(String cityCode, String date, String tempMax, String tempMin) {
+    public Yestoday(String cityCode, String date, String tempMax, String tempMin, String weatherStart, String weatherEnd) {
         this.cityCode = cityCode;
         this.date = date;
         this.tempMax = tempMax;
         this.tempMin = tempMin;
+        this.weatherStart = weatherStart;
+        this.weatherEnd = weatherEnd;
     }
 
     public String getCityCode() {
@@ -52,6 +56,22 @@ public class Yestoday {
         this.tempMin = tempMin;
     }
 
+    public String getWeatherStart() {
+        return weatherStart;
+    }
+
+    public void setWeatherStart(String weatherStart) {
+        this.weatherStart = weatherStart;
+    }
+
+    public String getWeatherEnd() {
+        return weatherEnd;
+    }
+
+    public void setWeatherEnd(String weatherEnd) {
+        this.weatherEnd = weatherEnd;
+    }
+
     @Override
     public String toString() {
         return "Yestoday{" +
@@ -59,6 +79,8 @@ public class Yestoday {
                 ", date='" + date + '\'' +
                 ", tempMax='" + tempMax + '\'' +
                 ", tempMin='" + tempMin + '\'' +
+                ", weatherStart='" + weatherStart + '\'' +
+                ", weatherEnd='" + weatherEnd + '\'' +
                 '}';
     }
 }

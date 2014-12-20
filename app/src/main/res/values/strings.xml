@@ -16,6 +16,10 @@
     <string name="gps_error">gps location failed,press back to exit!</string>
     <string name="activity_select">select location</string>
     <string name="no_results_now">no result</string>
+    <string name="yestoday">Yestoday</string>
+    <string name="today">Today</string>
+    <string name="tomorrow">Tomorrow</string>
+    <string name="dayaftertomorrow">Next</string>
 
     <string-array name="drawer_titles">
         <item>Live</item>

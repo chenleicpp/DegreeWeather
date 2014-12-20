@@ -56,6 +56,8 @@ public class TWeatherDao {
                 tWeather.setWeather(weather.getRealtime().getWeather());
                 tWeather.setYtempMax(weather.getYestoday().getTempMax());
                 tWeather.setYtempMin(weather.getYestoday().getTempMin());
+                tWeather.setWeatherStart(weather.getYestoday().getWeatherStart());
+                tWeather.setWeatherEnd(weather.getYestoday().getWeatherEnd());
                 weatherDao.create(tWeather);
                 return null;
             }
