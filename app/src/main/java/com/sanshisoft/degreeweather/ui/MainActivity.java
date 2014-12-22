@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.sanshisoft.degreeweather.App;
@@ -26,6 +27,7 @@ import com.sanshisoft.degreeweather.adapter.DrawerAdapter;
 import com.sanshisoft.degreeweather.bean.City;
 import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.model.Category;
+import com.sanshisoft.degreeweather.model.EventDesc;
 import com.sanshisoft.degreeweather.ui.fragment.LiveFragment;
 import com.sanshisoft.degreeweather.ui.fragment.TrendsFragment;
 import com.sanshisoft.degreeweather.util.LogUtil;
@@ -33,6 +35,8 @@ import com.sanshisoft.degreeweather.util.LogUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -48,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
     private DrawerAdapter mAdapter;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
+    private ImageView mTodayWeather;
 
     private String mCityName;
 
@@ -100,6 +105,7 @@ public class MainActivity extends ActionBarActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         final ViewGroup head = (ViewGroup)inflater.inflate(R.layout.header,mDrawerList,false);
+        mTodayWeather = (ImageView)head.findViewById(R.id.today_weather);
         mDrawerList.addHeaderView(head,null,false);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -116,6 +122,8 @@ public class MainActivity extends ActionBarActivity {
             City city = db.getCity(mCityName);
             App.getInstance().setCityNumber(city.getNumber());
         }
+
+        EventBus.getDefault().register(this);
     }
 
 
@@ -217,4 +225,28 @@ public class MainActivity extends ActionBarActivity {
         App.getInstance().setCityDB(db);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    public void onEventMainThread(EventDesc event) {
+        LogUtil.d("event----" + event.getDesc());
+        if (event.getDesc().equals("晴")){
+            mTodayWeather.setImageResource(R.drawable.qing);
+        }else if (event.getDesc().equals("晴转多云") || event.getDesc().equals("多云转晴")){
+            mTodayWeather.setImageResource(R.drawable.qingzhuanduoyun);
+        }else if (event.getDesc().contains("雨")){
+            mTodayWeather.setImageResource(R.drawable.yu);
+        }else if (event.getDesc().contains("雪")){
+            mTodayWeather.setImageResource(R.drawable.xue);
+        }else if (event.getDesc().contains("雾")){
+            mTodayWeather.setImageResource(R.drawable.wu);
+        }else if (event.getDesc().contains("雷")){
+            mTodayWeather.setImageResource(R.drawable.leizhenyu);
+        }else {
+            mTodayWeather.setImageResource(R.drawable.qing);
+        }
+    }
 }

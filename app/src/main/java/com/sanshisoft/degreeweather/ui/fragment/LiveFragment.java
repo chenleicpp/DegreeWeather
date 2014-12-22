@@ -13,6 +13,7 @@ import com.android.volley.Response;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
+import com.sanshisoft.degreeweather.model.EventDesc;
 import com.sanshisoft.degreeweather.model.TWeather;
 import com.sanshisoft.degreeweather.model.Weather;
 import com.sanshisoft.degreeweather.net.GsonRequest;
@@ -23,6 +24,7 @@ import java.sql.SQLException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by chenleicpp on 2014/12/2.
@@ -84,6 +86,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 LogUtil.d("todayMax:" + todayMax + "   todayMin:" + todayMin);
                 LogUtil.d("yestodayMax:" + yestodayMax + "   yestodayMin:" + yestodayMin);
                 showDiffDegree(todayMax, todayMin, yestodayMax, yestodayMin);
+                EventBus.getDefault().post(new EventDesc(weather.getRealtime().getWeather()));
                 try {
                     dao.insertNew(weather);
                 } catch (SQLException e) {

@@ -105,7 +105,12 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
                 LogUtil.d(weather.toString());
                 mTrendsCity.setText(weather.getForecast().getCity());
                 mTrendsPTime.setText(weather.getRealtime().getTime());
-                mTrendsMiddle1.setText(weather.getYestoday().getTempMax()+"℃~"+weather.getYestoday().getTempMin()+"℃");
+                if (isAsc(weather.getForecast().getTemp1())){
+                    mTrendsMiddle1.setText(weather.getYestoday().getTempMin()+"℃~"+weather.getYestoday().getTempMax()+"℃");
+                }else {
+                    mTrendsMiddle1.setText(weather.getYestoday().getTempMax()+"℃~"+weather.getYestoday().getTempMin()+"℃");
+                }
+
                 mTrendsRight1.setText(weather.getYestoday().getWeatherEnd());
                 mTrendsMiddle2.setText(weather.getForecast().getTemp1());
                 mTrendsRight2.setText(weather.getForecast().getWeather1());
@@ -121,5 +126,17 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
                 stopProgress(mSwipeLayout);
             }
         }, errorListener()));
+    }
+
+    private boolean isAsc(String str){
+        int res1,res2;
+        String temp1 = str.split("~")[0];
+        String temp2 = str.split("~")[1];
+        res1 = Integer.parseInt(temp1.substring(0,temp1.indexOf("℃")));
+        res2 = Integer.parseInt(temp2.substring(0,temp2.indexOf("℃")));
+        if (res1 < res2){
+            return true;
+        }
+        return false;
     }
 }
