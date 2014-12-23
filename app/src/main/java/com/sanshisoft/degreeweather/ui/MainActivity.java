@@ -235,7 +235,7 @@ public class MainActivity extends ActionBarActivity {
         LogUtil.d("event----" + event.getDesc());
         if (event.getDesc().equals("晴")){
             mTodayWeather.setImageResource(R.drawable.qing);
-        }else if (event.getDesc().equals("晴转多云") || event.getDesc().equals("多云转晴")){
+        }else if (event.getDesc().contains("多云")){
             mTodayWeather.setImageResource(R.drawable.qingzhuanduoyun);
         }else if (event.getDesc().contains("雨")){
             mTodayWeather.setImageResource(R.drawable.yu);
