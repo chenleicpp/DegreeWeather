@@ -81,7 +81,11 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
             if (weather != null){
                 mTrendsCity.setText(weather.getCity());
                 mTrendsPTime.setText(weather.getTime());
-                mTrendsMiddle1.setText(weather.getYtempMax()+"℃~"+weather.getYtempMin()+"℃");
+                if (isAsc(weather.getTemp1())){
+                    mTrendsMiddle1.setText(weather.getYtempMin()+"℃~"+weather.getYtempMax()+"℃");
+                }else {
+                    mTrendsMiddle1.setText(weather.getYtempMax()+"℃~"+weather.getYtempMin()+"℃");
+                }
                 mTrendsRight1.setText(weather.getWeatherEnd());
                 mTrendsMiddle2.setText(weather.getTemp1());
                 mTrendsRight2.setText(weather.getWeather1());

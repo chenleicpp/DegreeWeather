@@ -20,6 +20,11 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="dayaftertomorrow">Next</string>
+    <string name="btn_check">check update</string>
+    <string name="btn_evaluation">evaluation app</string>
+    <string name="dlg_ok">Ok</string>
+    <string name="dlg_cancel">Cancel</string>
+    <string name="dlg_message">Exit App?</string>
 
     <string-array name="drawer_titles">
         <item>Live</item>

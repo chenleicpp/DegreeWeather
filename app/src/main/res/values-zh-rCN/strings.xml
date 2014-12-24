@@ -20,6 +20,11 @@
     <string name="today">今天</string>
     <string name="tomorrow">明天</string>
     <string name="dayaftertomorrow">后天</string>
+    <string name="btn_check">检测更新</string>
+    <string name="btn_evaluation">评价软件</string>
+    <string name="dlg_ok">确定</string>
+    <string name="dlg_cancel">取消</string>
+    <string name="dlg_message">是否退出几度天气？</string>
 
     <string-array name="drawer_titles">
         <item>当前</item>

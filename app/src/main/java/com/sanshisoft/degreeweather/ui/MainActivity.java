@@ -1,6 +1,8 @@
 package com.sanshisoft.degreeweather.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -247,6 +249,30 @@ public class MainActivity extends ActionBarActivity {
             mTodayWeather.setImageResource(R.drawable.leizhenyu);
         }else {
             mTodayWeather.setImageResource(R.drawable.qing);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerLayout.isDrawerOpen(mDrawerList)){
+            mDrawerLayout.closeDrawers();
+        }else {
+            new AlertDialog.Builder(this)
+                    .setMessage(R.string.dlg_message)
+                    .setPositiveButton(R.string.dlg_ok, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(R.string.dlg_cancel, new DialogInterface.OnClickListener() {
+
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                        }
+                    }).show();
         }
     }
 }
