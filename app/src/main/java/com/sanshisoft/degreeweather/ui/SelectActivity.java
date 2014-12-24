@@ -160,7 +160,7 @@ public class SelectActivity extends ActionBarActivity implements TextWatcher,
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                LogUtil.d(mAdapter.getItem(i).toString());
+                MainActivity.launch(SelectActivity.this,mAdapter.getItem(i).getName());
             }
         });
 
@@ -182,7 +182,7 @@ public class SelectActivity extends ActionBarActivity implements TextWatcher,
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                LogUtil.d(mSearchCityAdapter.getItem(position).toString());
+                MainActivity.launch(SelectActivity.this,mSearchCityAdapter.getItem(position).getName());
             }
         });
     }

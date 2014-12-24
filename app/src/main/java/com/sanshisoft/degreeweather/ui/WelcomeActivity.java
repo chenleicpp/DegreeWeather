@@ -20,8 +20,11 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.sanshisoft.degreeweather.App;
+import com.sanshisoft.degreeweather.AppConfig;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.db.CityDB;
+import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
+import com.sanshisoft.degreeweather.model.TWeather;
 import com.sanshisoft.degreeweather.util.LogUtil;
 import com.sanshisoft.degreeweather.util.Utils;
 
@@ -29,6 +32,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import cn.trinea.android.common.util.PreferencesUtils;
 
 /**
  * Created by chenleicpp on 2014/12/8.
@@ -52,7 +57,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                 case DB_COPY_SUCCESS:
                     LogUtil.d("copy db file succeed!!!");
                     //3.高德地图定位
-                    requestLocation();
+                    jumpToMain();
                     break;
                 case DB_COPY_FAILED:
                     Toast.makeText(WelcomeActivity.this,"copy db file failed!",Toast.LENGTH_LONG).show();
@@ -117,7 +122,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                 mHandler.sendMessage(msg);
             }
         }else {
-            requestLocation();
+            jumpToMain();
         }
     }
 
@@ -209,5 +214,29 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    private void jumpToMain(){
+        if (PreferencesUtils.getBoolean(this,AppConfig.ISFIRSTIN,true)){
+            requestLocation();
+            PreferencesUtils.putBoolean(this,AppConfig.ISFIRSTIN,false);
+        }else {
+            TWeatherDao dao = new TWeatherDao(this);
+            if (dao.getRowCount() > 0){
+                TWeather weather = dao.getTWeather();
+                long intervalTime = System.currentTimeMillis() - beginTime;
+                if (intervalTime < 1 * 1000) {
+                    try {
+                        Thread.sleep(1000 - intervalTime);
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                MainActivity.launch(this,weather.getCity());
+            }else {
+                Toast.makeText(this,"database not exits!", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 }

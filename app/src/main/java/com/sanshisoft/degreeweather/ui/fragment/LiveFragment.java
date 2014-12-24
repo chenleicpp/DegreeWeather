@@ -1,6 +1,5 @@
 package com.sanshisoft.degreeweather.ui.fragment;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 import com.android.volley.Response;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
-import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
 import com.sanshisoft.degreeweather.model.EventDesc;
 import com.sanshisoft.degreeweather.model.TWeather;
 import com.sanshisoft.degreeweather.model.Weather;

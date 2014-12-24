@@ -63,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
         Bundle bundle = new Bundle();
         bundle.putString(LOCATION_CITY,city);
         intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
         activity.finish();
     }
