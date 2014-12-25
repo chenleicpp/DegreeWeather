@@ -45,6 +45,8 @@ import de.greenrobot.event.EventBus;
 public class MainActivity extends ActionBarActivity {
 
     public static final String LOCATION_CITY = "location_city";
+    //主动定位（首次启动）模式为1，被动读取数据库（非首次启动）模式为2
+    public static final String TYPE = "type";
 
     private String[] mDrawerTitles;
 
@@ -58,11 +60,13 @@ public class MainActivity extends ActionBarActivity {
     private ImageView mTodayWeather;
 
     private String mCityName;
+    private int mType;
 
-    public static void launch(Activity activity,String city){
+    public static void launch(Activity activity,String city,int type){
         Intent intent = new Intent(activity,MainActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString(LOCATION_CITY,city);
+        bundle.putInt(TYPE,type);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         activity.startActivity(intent);
@@ -121,12 +125,23 @@ public class MainActivity extends ActionBarActivity {
 
         Bundle b = getIntent().getExtras();
         mCityName = b.getString(LOCATION_CITY);
-        CityDB db = App.getInstance().getCityDB();
-        if (db != null){
-            City city = db.getCity(mCityName);
-            LogUtil.d("cityname:"+mCityName+"----city:"+city);
-            App.getInstance().setCityNumber(city.getNumber());
+        mType = b.getInt(TYPE);
+        switch (mType){
+            case 1:
+            {
+                CityDB db = App.getInstance().getCityDB();
+                if (db != null){
+                    City city = db.getCity(mCityName);
+                    App.getInstance().setCityNumber(city.getNumber());
+                }
+            }
+
+                 break;
+            case 2:
+                App.getInstance().setCityNumber(mCityName);
+                break;
         }
+
 
         EventBus.getDefault().register(this);
     }

@@ -177,7 +177,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                     e.printStackTrace();
                 }
             }
-            MainActivity.launch(this,aMapLocation.getCity());
+            MainActivity.launch(this,aMapLocation.getCity(),1);
         }else {
             //
             Toast.makeText(WelcomeActivity.this,R.string.gps_error,Toast.LENGTH_SHORT).show();
@@ -233,7 +233,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                         e.printStackTrace();
                     }
                 }
-                MainActivity.launch(this,weather.getCity());
+                MainActivity.launch(this,weather.getCityid(),2);
             }else {
                 Toast.makeText(this,"database not exits!", Toast.LENGTH_LONG).show();
             }
