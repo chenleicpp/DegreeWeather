@@ -166,6 +166,9 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
             case  R.id.action_refresh:
                 loadData(true);
                 return true;
+            case R.id.action_location:
+                LogUtil.d("trends");
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.text.TextUtils;
 
 import com.sanshisoft.degreeweather.bean.City;
+import com.sanshisoft.degreeweather.util.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

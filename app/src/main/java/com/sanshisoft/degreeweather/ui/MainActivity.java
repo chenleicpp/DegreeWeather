@@ -124,6 +124,7 @@ public class MainActivity extends ActionBarActivity {
         CityDB db = App.getInstance().getCityDB();
         if (db != null){
             City city = db.getCity(mCityName);
+            LogUtil.d("cityname:"+mCityName+"----city:"+city);
             App.getInstance().setCityNumber(city.getNumber());
         }
 
@@ -151,6 +152,8 @@ public class MainActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
+            return false;
+        }else if (id == R.id.action_location){
             return false;
         }
 
