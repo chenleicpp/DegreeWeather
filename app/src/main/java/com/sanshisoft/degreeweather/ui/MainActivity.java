@@ -20,9 +20,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
@@ -38,6 +41,8 @@ import com.sanshisoft.degreeweather.util.LogUtil;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.greenrobot.event.EventBus;
 
@@ -272,27 +277,39 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    private int keyBackClickCount = 0;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        keyBackClickCount = 0;
+    }
+
     @Override
     public void onBackPressed() {
         if (mDrawerLayout.isDrawerOpen(mDrawerList)){
             mDrawerLayout.closeDrawers();
         }else {
-            new AlertDialog.Builder(this)
-                    .setMessage(R.string.dlg_message)
-                    .setPositiveButton(R.string.dlg_ok, new DialogInterface.OnClickListener() {
-
+            switch (keyBackClickCount++) {
+                case 0:
+                    Toast.makeText(this,
+                            getResources().getString(R.string.press_again_exit),
+                            Toast.LENGTH_SHORT).show();
+                    Timer timer = new Timer();
+                    timer.schedule(new TimerTask() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            finish();
+                        public void run() {
+                            keyBackClickCount = 0;
                         }
-                    })
-                    .setNegativeButton(R.string.dlg_cancel, new DialogInterface.OnClickListener() {
-
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    }).show();
+                    }, 3000);
+                    break;
+                case 1:
+                    finish();
+                    System.exit(0);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
