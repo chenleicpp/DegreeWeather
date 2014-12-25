@@ -1,5 +1,6 @@
 package com.sanshisoft.degreeweather.ui.fragment;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -10,10 +11,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.location.LocationManagerProxy;
+import com.amap.api.location.LocationProviderProxy;
 import com.android.volley.Response;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
+import com.sanshisoft.degreeweather.bean.City;
+import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.model.TWeather;
 import com.sanshisoft.degreeweather.model.Weather;
 import com.sanshisoft.degreeweather.net.GsonRequest;
@@ -28,7 +36,7 @@ import butterknife.InjectView;
 /**
  * Created by chenleicpp on 2014/12/2.
  */
-public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.OnRefreshListener,AMapLocationListener {
 
     @InjectView(R.id.swipe_container)
     SwipeRefreshLayout mSwipeLayout;
@@ -57,10 +65,13 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
     @InjectView(R.id.trends_right_4)
     TextView mTrendsRight4;
 
+    private LocationManagerProxy mLocationManagerProxy;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        mLocationManagerProxy = LocationManagerProxy.getInstance(getActivity());
     }
 
     @Override
@@ -167,9 +178,62 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
                 loadData(true);
                 return true;
             case R.id.action_location:
-                LogUtil.d("trends");
+                requestLocation();
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onLocationChanged(AMapLocation aMapLocation) {
+        LogUtil.d("error:" + aMapLocation.getAMapException().getErrorMessage());
+        if (aMapLocation != null && aMapLocation.getAMapException().getErrorCode() == 0) {
+            CityDB db = App.getInstance().getCityDB();
+            if (db != null){
+                City city = db.getCity(aMapLocation.getCity());
+                App.getInstance().setCityNumber(city.getNumber());
+            }
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            loadData(false);
+        }else {
+            //
+            Toast.makeText(getActivity(), R.string.gps_error, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+    private void requestLocation(){
+        startProgress(mSwipeLayout);
+        mLocationManagerProxy.requestLocationData(LocationProviderProxy.AMapNetwork,-1,15,this);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mLocationManagerProxy.removeUpdates(this);
+        mLocationManagerProxy.destroy();
     }
 }
