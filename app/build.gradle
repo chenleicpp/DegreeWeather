@@ -35,4 +35,5 @@ dependencies {
     compile files('libs/ormlite-core-4.48.jar')
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'cn.trinea.android.common:trinea-android-common:4.2.15'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }

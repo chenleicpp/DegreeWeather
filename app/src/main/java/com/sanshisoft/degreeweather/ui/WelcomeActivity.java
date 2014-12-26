@@ -27,6 +27,7 @@ import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
 import com.sanshisoft.degreeweather.model.TWeather;
 import com.sanshisoft.degreeweather.util.LogUtil;
 import com.sanshisoft.degreeweather.util.Utils;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -209,6 +210,15 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
         super.onPause();
         mLocationManagerProxy.removeUpdates(this);
         mLocationManagerProxy.destroy();
+        MobclickAgent.onPageEnd("SplashScreen");
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("SplashScreen");
+        MobclickAgent.onResume(this);
     }
 
     @Override

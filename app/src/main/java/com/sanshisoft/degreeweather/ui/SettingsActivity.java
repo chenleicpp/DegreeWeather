@@ -11,7 +11,7 @@ import com.sanshisoft.degreeweather.ui.fragment.SettingsFragment;
 /**
  * Created by chenleicpp on 2014/12/3.
  */
-public class SettingsActivity extends ActionBarActivity {
+public class SettingsActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

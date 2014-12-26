@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.sanshisoft.degreeweather.db.CityDB;
 import com.sanshisoft.degreeweather.net.RequestManager;
+import com.umeng.analytics.MobclickAgent;
 
 import cn.trinea.android.common.util.PreferencesUtils;
 
@@ -27,6 +28,7 @@ public class App extends Application {
         sContext = getApplicationContext();
         RequestManager.init(this);
         PreferencesUtils.PREFERENCE_NAME = "config";
+        MobclickAgent.openActivityDurationTrack(false);
     }
 
     public static App getInstance(){

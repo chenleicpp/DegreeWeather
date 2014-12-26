@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
 import com.sanshisoft.degreeweather.net.RequestManager;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * Created by chenleicpp on 2014/12/16.
@@ -61,5 +62,17 @@ public class BaseFragment extends Fragment{
                 swipeLayout.setRefreshing(false);
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd("BaseFragment");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onPageStart("BaseFragment");
     }
 }

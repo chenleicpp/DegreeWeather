@@ -36,7 +36,7 @@ import java.util.Map;
 /**
  * Created by chenleicpp on 2014/12/3.
  */
-public class SelectActivity extends ActionBarActivity implements TextWatcher,
+public class SelectActivity extends BaseActivity implements TextWatcher,
         View.OnClickListener {
 
     private static final String FORMAT = "^[a-z,A-Z].*$";

@@ -19,7 +19,7 @@ import butterknife.InjectView;
 /**
  * Created by chenleicpp on 2014/12/3.
  */
-public class AboutActivity extends ActionBarActivity {
+public class AboutActivity extends BaseActivity {
 
     @InjectView(R.id.tv_version)
     TextView mTvVersion;

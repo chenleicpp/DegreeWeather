@@ -47,7 +47,7 @@ import java.util.TimerTask;
 import de.greenrobot.event.EventBus;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends BaseActivity {
 
     public static final String LOCATION_CITY = "location_city";
     //主动定位（首次启动）模式为1，被动读取数据库（非首次启动）模式为2
