@@ -36,4 +36,5 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'cn.trinea.android.common:trinea-android-common:4.2.15'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile files('libs/umeng-update-v2.4.2.jar')
 }

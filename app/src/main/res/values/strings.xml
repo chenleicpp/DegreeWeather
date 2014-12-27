@@ -25,6 +25,7 @@
     <string name="dlg_ok">Ok</string>
     <string name="dlg_cancel">Cancel</string>
     <string name="dlg_message">Exit App?</string>
+    <string name="press_again_exit">click again to exit!</string>
 
     <string-array name="drawer_titles">
         <item>Live</item>

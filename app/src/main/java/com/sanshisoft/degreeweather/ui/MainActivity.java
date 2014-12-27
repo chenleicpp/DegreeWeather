@@ -37,6 +37,7 @@ import com.sanshisoft.degreeweather.model.EventDesc;
 import com.sanshisoft.degreeweather.ui.fragment.LiveFragment;
 import com.sanshisoft.degreeweather.ui.fragment.TrendsFragment;
 import com.sanshisoft.degreeweather.util.LogUtil;
+import com.umeng.update.UmengUpdateAgent;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -149,6 +150,8 @@ public class MainActivity extends BaseActivity {
 
 
         EventBus.getDefault().register(this);
+
+        UmengUpdateAgent.update(this);
     }
 
 
@@ -268,7 +271,7 @@ public class MainActivity extends BaseActivity {
             mTodayWeather.setImageResource(R.drawable.yu);
         }else if (event.getDesc().contains("雪")){
             mTodayWeather.setImageResource(R.drawable.xue);
-        }else if (event.getDesc().contains("雾")){
+        }else if (event.getDesc().contains("雾") || event.getDesc().contains("霾")){
             mTodayWeather.setImageResource(R.drawable.wu);
         }else if (event.getDesc().contains("雷")){
             mTodayWeather.setImageResource(R.drawable.leizhenyu);

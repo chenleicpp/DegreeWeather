@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.ui.fragment.SettingsFragment;
 import com.sanshisoft.degreeweather.util.Utils;
+import com.umeng.update.UmengUpdateAgent;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -56,6 +57,12 @@ public class AboutActivity extends BaseActivity {
                 Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+            }
+        });
+        mBtnCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UmengUpdateAgent.update(AboutActivity.this);
             }
         });
     }
