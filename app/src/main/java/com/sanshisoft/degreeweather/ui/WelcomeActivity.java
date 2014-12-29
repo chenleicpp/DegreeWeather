@@ -6,12 +6,10 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -19,7 +17,6 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
-import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.AppConfig;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.db.CityDB;
@@ -45,6 +42,7 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
 
     private static final int DB_COPY_SUCCESS = 1;
     private static final int DB_COPY_FAILED = 2;
+    private static final int DB_ALREADY_EXITED = 3;
 
     private String mDbPath;
 
@@ -62,6 +60,10 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                     break;
                 case DB_COPY_FAILED:
                     Toast.makeText(WelcomeActivity.this,"copy db file failed!",Toast.LENGTH_LONG).show();
+                    break;
+                case DB_ALREADY_EXITED:
+                    PreferencesUtils.putBoolean(WelcomeActivity.this,AppConfig.ISFIRSTIN,true);
+                    Toast.makeText(WelcomeActivity.this,"database not exits! please try again", Toast.LENGTH_LONG).show();
                     break;
             }
         }
@@ -245,7 +247,9 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                 }
                 MainActivity.launch(this,weather.getCityid(),2);
             }else {
-                Toast.makeText(this,"database not exits!", Toast.LENGTH_LONG).show();
+                Message msg = mHandler.obtainMessage();
+                msg.what = DB_ALREADY_EXITED;
+                mHandler.sendMessage(msg);
             }
         }
     }
