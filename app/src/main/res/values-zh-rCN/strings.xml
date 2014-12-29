@@ -26,6 +26,8 @@
     <string name="dlg_cancel">取消</string>
     <string name="dlg_message">是否退出几度天气？</string>
     <string name="press_again_exit">再按一次退出几度天气</string>
+    <string name="toast_db_not_exist">数据库文件不存在！请重试。</string>
+    <string name="toast_db_copy_failed">复制数据库文件失败！请重试。</string>
 
     <string-array name="drawer_titles">
         <item>当前</item>

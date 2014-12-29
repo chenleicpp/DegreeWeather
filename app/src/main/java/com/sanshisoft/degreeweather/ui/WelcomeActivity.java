@@ -59,11 +59,11 @@ public class WelcomeActivity extends Activity implements AMapLocationListener {
                     jumpToMain();
                     break;
                 case DB_COPY_FAILED:
-                    Toast.makeText(WelcomeActivity.this,"copy db file failed!",Toast.LENGTH_LONG).show();
+                    Toast.makeText(WelcomeActivity.this,R.string.toast_db_copy_failed,Toast.LENGTH_LONG).show();
                     break;
                 case DB_ALREADY_EXITED:
                     PreferencesUtils.putBoolean(WelcomeActivity.this,AppConfig.ISFIRSTIN,true);
-                    Toast.makeText(WelcomeActivity.this,"database not exits! please try again", Toast.LENGTH_LONG).show();
+                    Toast.makeText(WelcomeActivity.this,R.string.toast_db_not_exist, Toast.LENGTH_LONG).show();
                     break;
             }
         }
