@@ -37,4 +37,5 @@ dependencies {
     compile 'cn.trinea.android.common:trinea-android-common:4.2.15'
     compile 'com.umeng.analytics:analytics:latest.integration'
     compile files('libs/umeng-update-v2.4.2.jar')
+    compile 'com.google.android.gms:play-services:6.5.+'
 }

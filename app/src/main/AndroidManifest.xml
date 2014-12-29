@@ -55,11 +55,17 @@
             android:name="com.umeng.update.UpdateDialogActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity
+            android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="abc2cf02ac31ba279a2f01455a432b45" />
         <meta-data android:value="549d1f3afd98c53b3b000d5c" android:name="UMENG_APPKEY"></meta-data>
         <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>

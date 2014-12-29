@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.SwipeRefreshLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:id="@+id/swipe_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
@@ -197,9 +199,18 @@
                     android:layout_marginTop="15.0dip"
                     android:layout_marginBottom="15dip"
                     android:layout_below="@id/trends_left_4" />
-
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5.0dip">
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ads:adUnitId="ca-app-pub-1407861838828186/4874730156"
+                    ads:adSize="BANNER "/>
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>
-
 </android.support.v4.widget.SwipeRefreshLayout>

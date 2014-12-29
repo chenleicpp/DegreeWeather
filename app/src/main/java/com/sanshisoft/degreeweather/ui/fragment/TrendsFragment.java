@@ -18,6 +18,8 @@ import com.amap.api.location.AMapLocationListener;
 import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.android.volley.Response;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.bean.City;
@@ -64,6 +66,8 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
     TextView mTrendsMiddle4;
     @InjectView(R.id.trends_right_4)
     TextView mTrendsRight4;
+    @InjectView(R.id.adView)
+    AdView adView;
 
     private LocationManagerProxy mLocationManagerProxy;
 
@@ -85,6 +89,12 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
 
         loadFromDb();
         loadData(true);
+
+        AdRequest adRequest = new AdRequest.Builder()
+            .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+            .addTestDevice("039b8286437ead29")
+            .build();
+        adView.loadAd(adRequest);
 
         return rootView;
     }
@@ -235,5 +245,18 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
         super.onPause();
         mLocationManagerProxy.removeUpdates(this);
         mLocationManagerProxy.destroy();
+        adView.pause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        adView.resume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        adView.destroy();
     }
 }
