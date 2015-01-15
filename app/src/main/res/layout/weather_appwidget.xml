@@ -28,8 +28,8 @@
 
             <ImageView
                 android:id="@+id/high_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_trending_down_black_48dp"/>
 
             <TextView
@@ -73,15 +73,15 @@
 
             <ImageView
                 android:id="@+id/low_img"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:src="@drawable/ic_trending_up_black_48dp"/>
 
             <TextView
                 android:id="@+id/low_digit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5°"
+                android:text="2°"
                 android:textSize="24sp"
                 android:gravity="center_vertical"
                 android:textColor="@android:color/background_dark"/>
