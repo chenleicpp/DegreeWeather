@@ -7,4 +7,5 @@ public class AppConfig {
     //public static final String WEATHER_ADDRESS = "http://weather.123.duba.net/static/weather_info/101090101.html";
     public static final String WEATHER_ADDRESS = "http://weatherapi.market.xiaomi.com/wtr-v2/weather?cityId=";
     public static final String ISFIRSTIN = "isFirstIn";
+    public static final String CITY_NUMBER = "cityNum";
 }

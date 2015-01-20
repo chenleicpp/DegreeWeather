@@ -1,31 +1,37 @@
 package com.sanshisoft.degreeweather.provider;
 
-import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.os.Bundle;
+
+import com.sanshisoft.degreeweather.service.WeatherUpdateService;
+import com.sanshisoft.degreeweather.util.LogUtil;
 
 /**
  * Created by chenleicpp on 2014/12/31.
  */
 public class WeatherWidgetProvider extends AppWidgetProvider {
+
+    public static final String UPDATE_WIDGET_WEATHER_ACTION = "com.sanshisoft.action.update_weather";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
+        String action = intent.getAction();
+        LogUtil.d("onReceive action = " + action);
+        if (action.equals("android.intent.action.USER_PRESENT")) {
+            context.startService(new Intent(context, WeatherUpdateService.class));
+        } else if (action.equals("android.intent.action.BOOT_COMPLETED")) {
+            context.startService(new Intent(context, WeatherUpdateService.class));
+        }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
-    }
-
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    @Override
-    public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        super.onAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
+        Intent intent = new Intent(context, WeatherUpdateService.class);
+        context.startService(intent);
     }
 
     @Override
@@ -41,5 +47,7 @@ public class WeatherWidgetProvider extends AppWidgetProvider {
     @Override
     public void onDisabled(Context context) {
         super.onDisabled(context);
+        Intent intent = new Intent(context, WeatherUpdateService.class);
+        context.stopService(intent);
     }
 }

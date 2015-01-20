@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.sanshisoft.degreeweather.App;
+import com.sanshisoft.degreeweather.AppConfig;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.bean.City;
 import com.sanshisoft.degreeweather.db.CityDB;
@@ -34,6 +35,7 @@ import java.sql.SQLException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.trinea.android.common.util.PreferencesUtils;
 
 /**
  * Created by chenleicpp on 2014/12/2.
@@ -202,6 +204,7 @@ public class TrendsFragment extends BaseFragment implements SwipeRefreshLayout.O
             if (db != null){
                 City city = db.getCity(aMapLocation.getCity());
                 App.getInstance().setCityNumber(city.getNumber());
+                PreferencesUtils.putString(App.getContext(), AppConfig.CITY_NUMBER, city.getNumber());
             }
             try {
                 Thread.sleep(100);

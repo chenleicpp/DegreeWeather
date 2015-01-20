@@ -1,5 +1,6 @@
 package com.sanshisoft.degreeweather.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -12,6 +13,7 @@ import com.android.volley.VolleyError;
 import com.sanshisoft.degreeweather.App;
 import com.sanshisoft.degreeweather.db.dao.TWeatherDao;
 import com.sanshisoft.degreeweather.net.RequestManager;
+import com.sanshisoft.degreeweather.provider.WeatherWidgetProvider;
 import com.umeng.analytics.MobclickAgent;
 
 /**
@@ -74,5 +76,11 @@ public class BaseFragment extends Fragment{
     public void onResume() {
         super.onResume();
         MobclickAgent.onPageStart("BaseFragment");
+    }
+
+    public void updateWidget(){
+        Intent intent = new Intent();
+        intent.setAction(WeatherWidgetProvider.UPDATE_WIDGET_WEATHER_ACTION);
+        getActivity().sendBroadcast(intent);
     }
 }

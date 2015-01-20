@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.sanshisoft.degreeweather.App;
+import com.sanshisoft.degreeweather.AppConfig;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.adapter.DrawerAdapter;
 import com.sanshisoft.degreeweather.bean.City;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cn.trinea.android.common.util.PreferencesUtils;
 import de.greenrobot.event.EventBus;
 
 
@@ -139,12 +141,14 @@ public class MainActivity extends BaseActivity {
                 if (db != null){
                     City city = db.getCity(mCityName);
                     App.getInstance().setCityNumber(city.getNumber());
+                    PreferencesUtils.putString(App.getContext(), AppConfig.CITY_NUMBER,city.getNumber());
                 }
             }
 
                  break;
             case 2:
                 App.getInstance().setCityNumber(mCityName);
+                PreferencesUtils.putString(App.getContext(), AppConfig.CITY_NUMBER,mCityName);
                 break;
         }
 

@@ -1,5 +1,6 @@
 package com.sanshisoft.degreeweather.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import com.amap.api.location.LocationManagerProxy;
 import com.amap.api.location.LocationProviderProxy;
 import com.android.volley.Response;
 import com.sanshisoft.degreeweather.App;
+import com.sanshisoft.degreeweather.AppConfig;
 import com.sanshisoft.degreeweather.R;
 import com.sanshisoft.degreeweather.bean.City;
 import com.sanshisoft.degreeweather.db.CityDB;
@@ -36,6 +38,7 @@ import java.sql.SQLException;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cn.trinea.android.common.util.PreferencesUtils;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -111,6 +114,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+                updateWidget();
                 stopProgress(mSwipeLayout);
             }
         }, errorListener()));
@@ -234,6 +238,7 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
             if (db != null){
                 City city = db.getCity(aMapLocation.getCity());
                 App.getInstance().setCityNumber(city.getNumber());
+                PreferencesUtils.putString(App.getContext(), AppConfig.CITY_NUMBER,city.getNumber());
             }
             try {
                 Thread.sleep(100);
@@ -278,4 +283,5 @@ public class LiveFragment extends BaseFragment implements SwipeRefreshLayout.OnR
         mLocationManagerProxy.removeUpdates(this);
         mLocationManagerProxy.destroy();
     }
+
 }

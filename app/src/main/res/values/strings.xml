@@ -28,6 +28,10 @@
     <string name="press_again_exit">click again to exit!</string>
     <string name="toast_db_not_exist">Database not exits! Please try again.</string>
     <string name="toast_db_copy_failed">Copy db file failed! Please try again.</string>
+    <string name="toast_update_failed">Update failed</string>
+    <string name="tv_max_temperature">Max temp</string>
+    <string name="tv_min_temperature">Min temp</string>
+    <string name="widget_first">Please click here to get weather info</string>
 
 
     <string-array name="drawer_titles">

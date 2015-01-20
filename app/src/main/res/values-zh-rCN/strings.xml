@@ -28,6 +28,10 @@
     <string name="press_again_exit">再按一次退出几度天气</string>
     <string name="toast_db_not_exist">数据库文件不存在！请重试。</string>
     <string name="toast_db_copy_failed">复制数据库文件失败！请重试。</string>
+    <string name="toast_update_failed">更新失败</string>
+    <string name="tv_max_temperature">最高温度</string>
+    <string name="tv_min_temperature">最低温度</string>
+    <string name="widget_first">请点击此处获取气温升降信息</string>
 
     <string-array name="drawer_titles">
         <item>当前</item>
